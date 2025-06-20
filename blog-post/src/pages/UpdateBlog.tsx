@@ -3,10 +3,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import BlogForm from "../components/BlogForm";
 import { supabase } from "../supabaseClient";
 import type { Blog } from "../store/blogSlice";
+import { useDispatch } from "react-redux";
+import { updateBlog } from "../store/blogSlice";
+import type { AppDispatch } from "../store/store";
 
 const UpdateBlog: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -26,6 +30,18 @@ const UpdateBlog: React.FC = () => {
     fetchBlog();
   }, [id]);
 
+  const handleEdit = async (title: string, content: string) => {
+    if (!id) return;
+    const result = await dispatch(
+      updateBlog({ id: Number(id), title, content })
+    );
+    if (updateBlog.fulfilled.match(result)) {
+      navigate("/blogs");
+    } else if (result.error) {
+      setError(result.error.message || "Failed to update blog");
+    }
+  };
+
   if (loading) return <div className="text-center mt-8">Loading...</div>;
   if (error)
     return <div className="text-center text-red-500 mt-8">{error}</div>;
@@ -37,7 +53,7 @@ const UpdateBlog: React.FC = () => {
         isEdit
         initialTitle={blog.title}
         initialContent={blog.content}
-        onSubmitEdit={() => navigate("/blogs")}
+        onSubmitEdit={handleEdit}
         onCancel={() => navigate("/blogs")}
       />
     </div>
