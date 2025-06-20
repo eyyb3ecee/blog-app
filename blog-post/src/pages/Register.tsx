@@ -27,50 +27,57 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
-        <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-blue-100">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-10">
+        <h2 className="text-3xl font-extrabold mb-8 text-center text-blue-700 tracking-tight">
+          Register
+        </h2>
         {success ? (
-          <div className="text-green-600 text-center font-semibold mb-4">
+          <div className="text-green-600 text-center font-semibold mb-6">
             Registration successful! Redirecting to login...
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <label className="block">
-              <span className="text-gray-700">Email:</span>
+              <span className="text-gray-700 font-medium">Email:</span>
               <input
                 type="email"
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400 mt-1"
+                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 mt-2 bg-gray-50"
               />
             </label>
             <label className="block">
-              <span className="text-gray-700">Password:</span>
+              <span className="text-gray-700 font-medium">Password:</span>
               <input
                 type="password"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400 mt-1"
+                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 mt-2 bg-gray-50"
               />
             </label>
             <button
               type="submit"
               disabled={status === "loading"}
-              className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition disabled:opacity-50"
+              className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition font-semibold disabled:opacity-50 shadow"
             >
               {status === "loading" ? "Registering..." : "Register"}
             </button>
           </form>
         )}
-        {error && <p className="mt-4 text-center text-red-500">{error}</p>}
-        <div className="mt-6 text-center">
+        {error && (
+          <p className="mt-6 text-center text-red-500 font-medium">{error}</p>
+        )}
+        <div className="mt-8 text-center">
           <span className="text-gray-600">Already have an account? </span>
-          <a href="/login" className="text-blue-600 hover:underline">
+          <a
+            href="/login"
+            className="text-blue-600 hover:underline font-semibold"
+          >
             Login
           </a>
         </div>

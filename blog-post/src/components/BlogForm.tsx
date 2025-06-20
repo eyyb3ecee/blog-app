@@ -60,9 +60,9 @@ const BlogForm: React.FC<BlogFormProps> = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-4 bg-white p-6 rounded shadow max-w-xl mx-auto"
+      className="space-y-6 bg-white p-8 rounded-2xl shadow-lg max-w-xl mx-auto"
     >
-      <h2 className="text-xl font-bold mb-4">
+      <h2 className="text-2xl font-extrabold mb-6 text-center text-blue-700 tracking-tight">
         {isEdit ? "Edit Blog" : "Create Blog"}
       </h2>
       <input
@@ -71,20 +71,20 @@ const BlogForm: React.FC<BlogFormProps> = ({
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         required
-        className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+        className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-50"
       />
       <textarea
         placeholder="Content"
         value={content}
         onChange={(e) => setContent(e.target.value)}
         required
-        className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400 min-h-[120px]"
+        className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 min-h-[120px] bg-gray-50"
       />
       <div className="flex gap-2">
         <button
           type="submit"
           disabled={status === "loading"}
-          className="flex-1 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition disabled:opacity-50"
+          className="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition font-semibold disabled:opacity-50 shadow"
         >
           {isEdit
             ? "Update Blog"
@@ -96,13 +96,13 @@ const BlogForm: React.FC<BlogFormProps> = ({
           <button
             type="button"
             onClick={onCancel}
-            className="flex-1 bg-gray-300 text-gray-700 py-2 rounded hover:bg-gray-400 transition"
+            className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg hover:bg-gray-300 transition font-semibold"
           >
             Cancel
           </button>
         )}
       </div>
-      {error && <p className="text-red-500 text-center">{error}</p>}
+      {error && <p className="text-red-500 text-center font-medium">{error}</p>}
     </form>
   );
 };
