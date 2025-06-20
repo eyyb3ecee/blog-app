@@ -7,16 +7,16 @@ import {
   Navigate,
   useNavigate,
 } from "react-router-dom";
-import Register from "./Register";
-import Login from "./Login";
 import { useSelector, useDispatch } from "react-redux";
-import type { RootState, AppDispatch } from "./store";
-import { logout } from "./authSlice";
-import { fetchBlogs } from "./blogSlice";
-import BlogDetails from "./BlogDetails";
-import CreateBlog from "./CreateBlog";
-import UpdateBlog from "./UpdateBlog";
-import DeleteBlog from "./DeleteBlog";
+import type { RootState, AppDispatch } from "./store/store";
+import { logout } from "./store/authSlice";
+import { fetchBlogs } from "./store/blogSlice";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import DeleteBlog from "./pages/DeleteBlog";
+import UpdateBlog from "./pages/UpdateBlog";
+import CreateBlog from "./pages/CreateBlog";
+import BlogDetails from "./pages/BlogDetails";
 
 const Account: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth);

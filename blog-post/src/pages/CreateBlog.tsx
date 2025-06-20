@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import BlogForm from "./BlogForm";
+import BlogForm from "../components/BlogForm";
 
 const CreateBlog: React.FC = () => {
   const navigate = useNavigate();

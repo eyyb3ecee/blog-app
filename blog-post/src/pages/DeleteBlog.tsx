@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { deleteBlog } from "./blogSlice";
-import { supabase } from "./supabaseClient";
-import type { Blog } from "./blogSlice";
-import type { AppDispatch } from "./store";
+import { deleteBlog } from "../store/blogSlice";
+import { supabase } from "../supabaseClient";
+import type { Blog } from "../store/blogSlice";
+import type { AppDispatch } from "../store/store";
 
 const DeleteBlog: React.FC = () => {
   const { id } = useParams<{ id: string }>();

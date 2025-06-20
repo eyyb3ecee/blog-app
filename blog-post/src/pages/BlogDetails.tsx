@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { supabase } from "./supabaseClient";
-import type { Blog } from "./blogSlice";
+import { supabase } from "../supabaseClient";
+import type { Blog } from "../store/blogSlice";
 
 const BlogDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { supabase } from "./supabaseClient";
+import { supabase } from "../supabaseClient";
 import type { RootState } from "./store";
 
 export interface Blog {

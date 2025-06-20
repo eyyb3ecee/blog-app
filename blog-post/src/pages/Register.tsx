@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "./store";
-import { register } from "./authSlice";
+import type { AppDispatch, RootState } from "../store/store";
+import { register } from "../store/authSlice";
 import { useNavigate } from "react-router-dom";
 
 const Register: React.FC = () => {

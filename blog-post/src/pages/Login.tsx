@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "./store";
-import { login } from "./authSlice";
+import type { AppDispatch, RootState } from "../store/store";
+import { login } from "../store/authSlice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch as useReduxDispatch } from "react-redux";
 

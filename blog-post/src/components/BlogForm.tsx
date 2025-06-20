@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "./store";
-import { createBlog } from "./blogSlice";
+import type { AppDispatch, RootState } from "../store/store";
+import { createBlog } from "../store/blogSlice";
 
 interface BlogFormProps {
   initialTitle?: string;

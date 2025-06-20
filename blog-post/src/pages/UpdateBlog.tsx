@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import BlogForm from "./BlogForm";
-import { supabase } from "./supabaseClient";
-import type { Blog } from "./blogSlice";
+import BlogForm from "../components/BlogForm";
+import { supabase } from "../supabaseClient";
+import type { Blog } from "../store/blogSlice";
 
 const UpdateBlog: React.FC = () => {
   const { id } = useParams<{ id: string }>();
