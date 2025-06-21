@@ -20,6 +20,7 @@ import BlogDetails from "./pages/BlogDetails";
 
 const Account: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth);
+  const { blogs } = useSelector((state: RootState) => state.blog);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
@@ -28,9 +29,12 @@ const Account: React.FC = () => {
     navigate("/login");
   };
 
+  // Get user's own blogs
+  const userBlogs = blogs.filter((b) => b.user_id === user?.id && b.id);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-blue-100">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-10 text-center">
+      <div className="w-full max-w-4xl bg-white rounded-2xl shadow-lg p-10 text-center">
         <h2 className="text-3xl font-extrabold mb-6 text-blue-700 tracking-tight">
           Account Page
         </h2>
@@ -38,15 +42,90 @@ const Account: React.FC = () => {
           Welcome,{" "}
           <span className="font-semibold text-blue-600">{user?.email}</span>!
         </p>
-        <Link
-          to="/blogs"
-          className="block mb-6 text-blue-600 hover:underline font-semibold text-lg"
-        >
-          Go to Blogs
-        </Link>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <Link
+            to="/blogs"
+            className="block p-6 bg-blue-50 rounded-xl hover:bg-blue-100 transition"
+          >
+            <h3 className="text-xl font-semibold text-blue-700 mb-2">
+              View All Blogs
+            </h3>
+            <p className="text-gray-600">See all blog posts from everyone</p>
+          </Link>
+
+          <Link
+            to="/blogs/create"
+            className="block p-6 bg-green-50 rounded-xl hover:bg-green-100 transition"
+          >
+            <h3 className="text-xl font-semibold text-green-700 mb-2">
+              Create New Blog
+            </h3>
+            <p className="text-gray-600">Write and publish a new blog post</p>
+          </Link>
+        </div>
+
+        {/* My Blogs Section */}
+        <div className="text-left">
+          <h3 className="text-2xl font-bold mb-4 text-gray-800">
+            My Blogs ({userBlogs.length})
+          </h3>
+          {userBlogs.length === 0 ? (
+            <p className="text-gray-500 text-center py-8">
+              You haven't created any blogs yet.
+            </p>
+          ) : (
+            <div className="space-y-4 max-h-96 overflow-y-auto">
+              {userBlogs.slice(0, 5).map((blog) => (
+                <div key={blog.id} className="bg-gray-50 p-4 rounded-lg">
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-gray-800">
+                        {blog.title}
+                      </h4>
+                      <p className="text-sm text-gray-600 mt-1">
+                        {blog.content.length > 100
+                          ? `${blog.content.substring(0, 100)}...`
+                          : blog.content}
+                      </p>
+                      <p className="text-xs text-gray-400 mt-2">
+                        Created:{" "}
+                        {new Date(blog.created_at).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div className="flex gap-2 ml-4">
+                      <Link to={`/blogs/update/${blog.id}`}>
+                        <button className="px-3 py-1 bg-blue-100 text-blue-700 rounded text-sm hover:bg-blue-200 transition">
+                          Edit
+                        </button>
+                      </Link>
+                      <Link to={`/blogs/delete/${blog.id}`}>
+                        <button className="px-3 py-1 bg-red-100 text-red-700 rounded text-sm hover:bg-red-200 transition">
+                          Delete
+                        </button>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {userBlogs.length > 5 && (
+                <p className="text-center text-gray-500 text-sm">
+                  Showing 5 of {userBlogs.length} blogs.
+                  <Link
+                    to="/blogs"
+                    className="text-blue-600 hover:underline ml-1"
+                  >
+                    View all
+                  </Link>
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+
         <button
           onClick={handleLogout}
-          className="w-full bg-red-500 text-white py-3 rounded-lg hover:bg-red-600 transition font-semibold shadow"
+          className="w-full mt-8 bg-red-500 text-white py-3 rounded-lg hover:bg-red-600 transition font-semibold shadow"
         >
           Logout
         </button>
@@ -78,10 +157,10 @@ const Blogs: React.FC = () => {
     if (user) dispatch(fetchBlogs());
   }, [dispatch, user]);
 
-  // Only show user's blogs with valid IDs
-  const userBlogs = blogs.filter((b) => b.user_id === user?.id && b.id);
-  const totalPages = Math.ceil(userBlogs.length / BLOGS_PER_PAGE);
-  const paginatedBlogs = userBlogs.slice(
+  // Show all blogs from all users
+  const allBlogs = blogs.filter((b) => b.id);
+  const totalPages = Math.ceil(allBlogs.length / BLOGS_PER_PAGE);
+  const paginatedBlogs = allBlogs.slice(
     (page - 1) * BLOGS_PER_PAGE,
     page * BLOGS_PER_PAGE
   );
@@ -117,13 +196,13 @@ const Blogs: React.FC = () => {
           </Link>
         </div>
         <h1 className="text-3xl font-extrabold mb-10 text-center text-blue-700 tracking-tight">
-          My Blogs
+          All Blogs
         </h1>
         <div className="mt-8 space-y-6">
           {status === "loading" && (
             <p className="text-center text-lg text-blue-600">Loading...</p>
           )}
-          {userBlogs.length === 0 && (
+          {allBlogs.length === 0 && (
             <p className="text-center text-gray-500">No blogs yet.</p>
           )}
           {paginatedBlogs.map((blog, index) => (
@@ -135,23 +214,29 @@ const Blogs: React.FC = () => {
                 <h2 className="text-xl font-bold text-blue-800">
                   {blog.title}
                 </h2>
-                <div className="flex gap-2">
-                  <Link to={`/blogs/update/${blog.id}`}>
-                    <button className="px-4 py-1 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition font-semibold border border-blue-300 shadow-sm">
-                      Edit
-                    </button>
-                  </Link>
-                  <Link to={`/blogs/delete/${blog.id}`}>
-                    <button className="px-4 py-1 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-semibold border border-gray-300 shadow-sm">
-                      Delete
-                    </button>
-                  </Link>
-                </div>
+                {/* Only show edit/delete buttons if user is the author */}
+                {blog.user_id === user?.id && (
+                  <div className="flex gap-2">
+                    <Link to={`/blogs/update/${blog.id}`}>
+                      <button className="px-4 py-1 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition font-semibold border border-blue-300 shadow-sm">
+                        Edit
+                      </button>
+                    </Link>
+                    <Link to={`/blogs/delete/${blog.id}`}>
+                      <button className="px-4 py-1 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-semibold border border-gray-300 shadow-sm">
+                        Delete
+                      </button>
+                    </Link>
+                  </div>
+                )}
               </div>
               <p className="text-gray-700 mb-2">{blog.content}</p>
-              <p className="text-xs text-gray-400">
-                Created: {new Date(blog.created_at).toLocaleString()}
-              </p>
+              <div className="flex justify-between items-center text-xs text-gray-400">
+                <span>By: {blog.email}</span>
+                <span>
+                  Created: {new Date(blog.created_at).toLocaleString()}
+                </span>
+              </div>
             </div>
           ))}
         </div>
