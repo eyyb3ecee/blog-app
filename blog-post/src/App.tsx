@@ -95,12 +95,12 @@ const Account: React.FC = () => {
                     </div>
                     <div className="flex gap-2 ml-4">
                       <Link to={`/blogs/update/${blog.id}`}>
-                        <button className="px-3 py-1 bg-blue-100 text-blue-700 rounded text-sm hover:bg-blue-200 transition">
+                        <button className="px-4 py-1 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition font-semibold border border-blue-300 shadow-sm">
                           Edit
                         </button>
                       </Link>
                       <Link to={`/blogs/delete/${blog.id}`}>
-                        <button className="px-3 py-1 bg-red-100 text-red-700 rounded text-sm hover:bg-red-200 transition">
+                        <button className="px-4 py-1 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-semibold border border-gray-300 shadow-sm">
                           Delete
                         </button>
                       </Link>
