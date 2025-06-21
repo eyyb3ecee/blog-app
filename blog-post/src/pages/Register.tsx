@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../store/store";
+import { login } from "../store/authSlice";
 import { supabase } from "../supabaseClient";
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -23,7 +27,13 @@ const Register: React.FC = () => {
     if (error) {
       setError(error.message);
     } else {
-      navigate("/login");
+      // Automatically log in the user after successful registration
+      const loginResult = await dispatch(login({ email, password }));
+      if (login.fulfilled.match(loginResult)) {
+        navigate("/account");
+      } else {
+        navigate("/login");
+      }
     }
   };
 
